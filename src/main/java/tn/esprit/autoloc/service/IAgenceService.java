@@ -1,11 +1,12 @@
 package tn.esprit.autoloc.service;
 
-import tn.esprit.autoloc.domain.Agence;
 import java.util.List;
+import tn.esprit.autoloc.domain.Agence;
 
 public interface IAgenceService {
-    List<Agence> getAllAgences();
-    Agence getAgenceById(Long id);
     Agence saveAgence(Agence agence);
+    Agence getAgenceById(Long id);
+    List<Agence> getAllAgences();
+    Agence updateAgence(Long id, Agence agence);
     void deleteAgence(Long id);
 }

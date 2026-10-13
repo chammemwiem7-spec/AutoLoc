@@ -1,20 +1,34 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import tn.esprit.autoloc.domain.Employe;
-import tn.esprit.autoloc.repository.EmployeRepository;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.domain.Employe;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
+import tn.esprit.autoloc.repository.EmployeRepository;
 
 @Service
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class EmployeServiceImpl implements IEmployeService {
 
-    EmployeRepository employeRepository;
+    private final EmployeRepository employeRepository;
+
+    @Override
+    public Employe saveEmploye(Employe employe) {
+        if (employe.getIdEmploye() != null) {
+            throw new IllegalArgumentException("L'identifiant doit être null");
+        }
+        if (employe.getNom() == null || employe.getNom().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'employé est obligatoire");
+        }
+        return employeRepository.save(employe);
+    }
+
+    @Override
+    public Employe getEmployeById(Long id) {
+        return employeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employe", id));
+    }
 
     @Override
     public List<Employe> getAllEmployes() {
@@ -22,19 +36,23 @@ public class EmployeServiceImpl implements IEmployeService {
     }
 
     @Override
-    public Employe getEmployeById(Long id) {
-        return employeRepository.findById(id).orElse(null);
+    public Employe updateEmploye(Long id, Employe employe) {
+        Employe existant = getEmployeById(id);
+        if (employe.getNom() == null || employe.getNom().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'employé est obligatoire");
+        }
+        existant.setNom(employe.getNom());
+        existant.setPrenom(employe.getPrenom());
+        existant.setRole(employe.getRole());
+        existant.setAgence(employe.getAgence());
+        return employeRepository.save(existant);
     }
 
     @Override
-    @Transactional
-    public Employe saveEmploye(Employe employe) {
-        return employeRepository.save(employe);
-    }
-
-    @Override
-    @Transactional
     public void deleteEmploye(Long id) {
+        if (!employeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employe", id);
+        }
         employeRepository.deleteById(id);
     }
 }

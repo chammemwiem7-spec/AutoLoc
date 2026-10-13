@@ -25,14 +25,4 @@ public class PaiementController {
     public Paiement getPaiementById(@PathVariable Long id) {
         return paiementService.getPaiementById(id);
     }
-
-    @PostMapping
-    public Paiement createPaiement(@RequestBody Paiement paiement) {
-        return paiementService.savePaiement(paiement);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deletePaiement(@PathVariable Long id) {
-        paiementService.deletePaiement(id);
-    }
 }

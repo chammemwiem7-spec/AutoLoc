@@ -1,11 +1,12 @@
 package tn.esprit.autoloc.service;
 
-import tn.esprit.autoloc.domain.Equipement;
 import java.util.List;
+import tn.esprit.autoloc.domain.Equipement;
 
 public interface IEquipementService {
-    List<Equipement> getAllEquipements();
-    Equipement getEquipementById(Long id);
     Equipement saveEquipement(Equipement equipement);
+    Equipement getEquipementById(Long id);
+    List<Equipement> getAllEquipements();
+    Equipement updateEquipement(Long id, Equipement equipement);
     void deleteEquipement(Long id);
 }

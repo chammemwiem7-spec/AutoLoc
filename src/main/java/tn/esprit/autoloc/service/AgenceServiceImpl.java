@@ -1,20 +1,34 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import tn.esprit.autoloc.domain.Agence;
-import tn.esprit.autoloc.repository.AgenceRepository;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.domain.Agence;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
+import tn.esprit.autoloc.repository.AgenceRepository;
 
 @Service
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class AgenceServiceImpl implements IAgenceService {
 
-    AgenceRepository agenceRepository;
+    private final AgenceRepository agenceRepository;
+
+    @Override
+    public Agence saveAgence(Agence agence) {
+        if (agence.getIdAgence() != null) {
+            throw new IllegalArgumentException("L'identifiant doit être null pour la création");
+        }
+        if (agence.getNom() == null || agence.getNom().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'agence est obligatoire");
+        }
+        return agenceRepository.save(agence);
+    }
+
+    @Override
+    public Agence getAgenceById(Long id) {
+        return agenceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", id));
+    }
 
     @Override
     public List<Agence> getAllAgences() {
@@ -22,19 +36,23 @@ public class AgenceServiceImpl implements IAgenceService {
     }
 
     @Override
-    public Agence getAgenceById(Long id) {
-        return agenceRepository.findById(id).orElse(null);
+    public Agence updateAgence(Long id, Agence agence) {
+        Agence existant = getAgenceById(id);
+        if (agence.getNom() == null || agence.getNom().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'agence est obligatoire");
+        }
+        existant.setNom(agence.getNom());
+        existant.setVille(agence.getVille());
+        existant.setAdresse(agence.getAdresse());
+        existant.setTelephone(agence.getTelephone());
+        return agenceRepository.save(existant);
     }
 
     @Override
-    @Transactional
-    public Agence saveAgence(Agence agence) {
-        return agenceRepository.save(agence);
-    }
-
-    @Override
-    @Transactional
     public void deleteAgence(Long id) {
+        if (!agenceRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Agence", id);
+        }
         agenceRepository.deleteById(id);
     }
 }
