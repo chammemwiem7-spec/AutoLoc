@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IReservationService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reservations")
+@RequestMapping("/reservations")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ReservationController {
@@ -28,6 +28,10 @@ public class ReservationController {
 
     @PostMapping
     public Reservation createReservation(@RequestBody Reservation reservation) {
+        return reservationService.saveReservation(reservation);
+    }
+    @PutMapping("/{id}")
+    public Reservation updateReservation(@PathVariable Long id, @RequestBody Reservation reservation) {
         return reservationService.saveReservation(reservation);
     }
 

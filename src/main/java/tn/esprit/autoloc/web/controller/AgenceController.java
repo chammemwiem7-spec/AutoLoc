@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IAgenceService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/agences")
+@RequestMapping("/agences")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AgenceController {
@@ -30,7 +30,10 @@ public class AgenceController {
     public Agence createAgence(@RequestBody Agence agence) {
         return agenceService.saveAgence(agence);
     }
-
+    @PutMapping("/{id}")
+    public Agence updateAgence(@PathVariable Long id, @RequestBody Agence agence) {
+        return agenceService.saveAgence(agence);
+    }
     @DeleteMapping("/{id}")
     public void deleteAgence(@PathVariable Long id) {
         agenceService.deleteAgence(id);

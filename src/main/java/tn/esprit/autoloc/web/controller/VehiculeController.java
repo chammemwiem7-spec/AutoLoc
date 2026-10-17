@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IVehiculeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vehicules")
+@RequestMapping("/vehicules")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VehiculeController {
@@ -30,6 +30,9 @@ public class VehiculeController {
     public Vehicule createVehicule(@RequestBody Vehicule vehicule) {
         return vehiculeService.saveVehicule(vehicule);
     }
+    @PutMapping("/{id}")
+    public Vehicule updateVehicule(@PathVariable Long id, @RequestBody Vehicule vehicule) {
+        return vehiculeService.saveVehicule(vehicule); }
 
     @DeleteMapping("/{id}")
     public void deleteVehicule(@PathVariable Long id) {

@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IEquipementService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/equipements")
+@RequestMapping("/equipements")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EquipementController {
@@ -28,6 +28,10 @@ public class EquipementController {
 
     @PostMapping
     public Equipement createEquipement(@RequestBody Equipement equipement) {
+        return equipementService.saveEquipement(equipement);
+    }
+    @PutMapping("/{id}")
+    public Equipement updateEquipement(@PathVariable Long id, @RequestBody Equipement equipement) {
         return equipementService.saveEquipement(equipement);
     }
 

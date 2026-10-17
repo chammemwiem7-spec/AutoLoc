@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IMaintenanceService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/maintenances")
+@RequestMapping("/maintenances")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MaintenanceController {
@@ -28,6 +28,10 @@ public class MaintenanceController {
 
     @PostMapping
     public Maintenance createMaintenance(@RequestBody Maintenance maintenance) {
+        return maintenanceService.saveMaintenance(maintenance);
+    }
+    @PutMapping("/{id}")
+    public Maintenance updateMaintenance(@PathVariable Long id, @RequestBody Maintenance maintenance) {
         return maintenanceService.saveMaintenance(maintenance);
     }
 

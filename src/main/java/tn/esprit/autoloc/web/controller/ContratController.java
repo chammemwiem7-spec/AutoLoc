@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IContratService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contrats")
+@RequestMapping("/contrats")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ContratController {
@@ -28,6 +28,11 @@ public class ContratController {
 
     @PostMapping
     public Contrat createContrat(@RequestBody Contrat contrat) {
+        return contratService.saveContrat(contrat);
+    }
+
+    @PutMapping("/{id}")
+    public Contrat updateContrat(@PathVariable Long id, @RequestBody Contrat contrat) {
         return contratService.saveContrat(contrat);
     }
 

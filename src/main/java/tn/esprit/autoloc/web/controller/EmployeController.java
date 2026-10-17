@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IEmployeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employes")
+@RequestMapping("/employes")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EmployeController {
@@ -31,6 +31,10 @@ public class EmployeController {
         return employeService.saveEmploye(employe);
     }
 
+    @PutMapping("/{id}")
+    public Employe updateEmploye(@PathVariable Long id, @RequestBody Employe employe) {
+        return employeService.saveEmploye(employe);
+    }
     @DeleteMapping("/{id}")
     public void deleteEmploye(@PathVariable Long id) {
         employeService.deleteEmploye(id);

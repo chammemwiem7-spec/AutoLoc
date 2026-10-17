@@ -9,7 +9,7 @@ import tn.esprit.autoloc.service.IClientService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/clients")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClientController {
@@ -28,6 +28,10 @@ public class ClientController {
 
     @PostMapping
     public Client createClient(@RequestBody Client client) {
+        return clientService.saveClient(client);
+    }
+    @PutMapping("/{id}")
+    public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
         return clientService.saveClient(client);
     }
 
